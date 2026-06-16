@@ -1,0 +1,7 @@
+interface:
+  display_name: "JC AI Imagegen"
+  short_description: "Generate images through JC AI with context"
+  default_prompt: "Use $jc-ai-imagegen to generate an image from this conversation context."
+
+policy:
+  allow_implicit_invocation: true
