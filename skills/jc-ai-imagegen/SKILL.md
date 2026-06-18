@@ -1,11 +1,11 @@
 ---
 name: "jc-ai-imagegen"
-description: "Generate or edit images through the JC AI relay instead of Codex's built-in image_generation tool. Use when the user wants image generation that still reflects the current conversation context, wants faster observable timing, or wants to compare Codex native image generation latency with JC AI's relay chain."
+description: "Generate or edit images through the JC AI NewAPI gateway instead of Codex's built-in image_generation tool. Use when the user wants image generation that still reflects the current conversation context, wants faster observable timing, or wants to compare Codex native image generation latency with JC AI's NewAPI/sub2api chain."
 ---
 
 # JC AI Imagegen
 
-Use this skill when the user asks to generate or edit an image through the JC AI relay, especially when they want Codex conversation context but do not want to rely on Codex's built-in `image_generation` tool.
+Use this skill when the user asks to generate or edit an image through JC AI, especially when they want Codex conversation context but do not want to rely on Codex's built-in `image_generation` tool.
 
 ## Workflow
 
@@ -14,9 +14,7 @@ Use this skill when the user asks to generate or edit an image through the JC AI
    - If the user says "like before", "use the previous image", or asks for an edit, identify the relevant local image path from the conversation when available.
    - Do not ask the script to infer context; the script only sends the final prompt and optional reference images.
 2. Prefer concise, explicit image prompts. Include visual details, composition, style, aspect ratio, text requirements, and avoid irrelevant chat history.
-3. Run `scripts/generate` with the synthesized prompt.
-   - The wrapper uses system `node` when available and falls back to Codex bundled Node.js runtimes under `~/.cache/codex-runtimes/`.
-   - If no Node.js runtime is available, tell the user to install Node.js LTS from https://nodejs.org/ and restart Codex.
+3. Run `scripts/generate.mjs` with the synthesized prompt.
    - The script defaults to the local Codex GPT provider in `~/.codex/config.toml`.
    - It reads the API key from local Codex auth at `~/.codex/auth.json` and does not print the key.
    - `JC_AI_API_KEY` or `OPENAI_API_KEY` can still override only if Codex auth is unavailable.
@@ -30,19 +28,19 @@ Use this skill when the user asks to generate or edit an image through the JC AI
 Generate from stdin:
 
 ```bash
-scripts/generate --stdin --size 1024x1024 --quality medium
+node scripts/generate.mjs --stdin --size 1024x1024 --quality medium
 ```
 
 Generate with a reference image:
 
 ```bash
-scripts/generate --stdin --image /absolute/path/reference.png --action edit
+node scripts/generate.mjs --stdin --image /absolute/path/reference.png --action edit
 ```
 
 Dry-run the request shape without calling the API:
 
 ```bash
-scripts/generate --stdin --dry-run
+node scripts/generate.mjs --stdin --dry-run
 ```
 
 ## Output Rules
