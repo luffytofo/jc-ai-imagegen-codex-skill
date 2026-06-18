@@ -15,6 +15,6 @@ After installation, restart Codex so it can load the new skill.
 
 ## Skill
 
-The skill generates or edits images through the JC AI NewAPI gateway using `skills/jc-ai-imagegen/scripts/generate.mjs`.
+The skill generates or edits images through the JC AI relay using `skills/jc-ai-imagegen/scripts/generate`.
 
-Users should provide their own authentication through Codex auth, `JC_AI_API_KEY`, or `OPENAI_API_KEY`.
+The launcher uses system Node.js when available and falls back to Codex bundled Node.js runtimes.
