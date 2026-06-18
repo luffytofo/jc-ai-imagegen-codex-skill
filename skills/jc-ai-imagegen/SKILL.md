@@ -1,17 +1,20 @@
 ---
 name: "jc-ai-imagegen"
-description: "Generate or edit images through the JC AI relay instead of Codex's built-in image_generation tool. Use when the user wants image generation that still reflects the current conversation context, wants faster observable timing, or wants to compare Codex native image generation latency with JC AI's relay chain."
+description: "Generate or edit images through the JC AI relay instead of Codex's built-in image_generation tool. Use when the user asks for image generation, image editing, reference-image variation, latency checks, or comparisons with Codex native image generation. Use only the current visible thread context and user-provided or explicitly referenced images; never search other chats or unrelated generated-image folders for context."
 ---
 
 # JC AI Imagegen
 
-Use this skill when the user asks to generate or edit an image through the JC AI relay, especially when they want Codex conversation context but do not want to rely on Codex's built-in `image_generation` tool.
+Use this skill when the user asks to generate or edit an image through the JC AI relay, especially when they want the current thread's context but do not want to rely on Codex's built-in `image_generation` tool.
 
 ## Workflow
 
-1. Read the current conversation context yourself and synthesize the actual image prompt.
+1. Read only the current visible thread context and synthesize the actual image prompt.
    - Preserve the user's latest request, style, subject, constraints, brand/domain context, and any corrections from earlier turns.
-   - If the user says "like before", "use the previous image", or asks for an edit, identify the relevant local image path from the conversation when available.
+   - Do not use images, prompts, paths, or outputs from other chats, other workspaces, unrelated browser tabs, or global generated-image folders.
+   - Do not scan `~/.codex/generated_images/`, `~/Downloads/`, project-wide image folders, or other broad locations to guess context.
+   - If the user says "like before", "use the previous image", or asks for an edit, use only an image path or attachment that is visible in this thread, was provided in the current user request, or was generated and reported by this skill in the current thread.
+   - If no unambiguous current-thread reference image exists, do not invent one or pull one from elsewhere. Ask the user for the image/path, or proceed as a new text-to-image generation when that is clearly acceptable.
    - Do not ask the script to infer context; the script only sends the final prompt and optional reference images.
 2. Prefer concise, explicit image prompts. Include visual details, composition, style, aspect ratio, text requirements, and avoid irrelevant chat history.
 3. Run `scripts/generate` with the synthesized prompt.
